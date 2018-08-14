@@ -1,0 +1,159 @@
+---
+title: 'BISC 307, Lab 1a: Ecoclimate & Public Health'
+author: "Prof. Jackie Hatala Matthes, Fall 2018"
+date: 'Lab: 12 September'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+### Lab 1a Objectives
+1. Visualize similarities and differences in Phoenix and Boston climates.
+2. Use 30-year climatology to calculate daily departures from "normal" climate.
+3. Quantitatively assess whether Phoenix or Boston weather is more predictable. 
+
+### 1. Introduction: Packages, Data
+In this lab, we'll learn to work with Rstudio to load and visualize a dataset describing the climates of Boston and Phoenix. Our lab objectives for today will build on what you read in preparation for this week's lab, [Sections 3.1-3.6 from the R for Data Science](http://r4ds.had.co.nz/data-visualisation.html#introduction-1) book. 
+
+R is an object-oriented programming language, where the "objects" can be data tables (called data frames or tibbles in R), constants, functions, vectors, matrices, or lists. We'll build up to learning some of these other types of objects through this class, but today we'll exclusively focus on tibbles (i.e., data tables) because this is probably the most common type of object encountered in biological data analysis. 
+
+Another powerful aspect of R is that it is open-source, which means that anyone can contribute code to improve the software, and this is also why you can always use it for free! Hadley Wickham, the author of your R for Data Science book, has authored many of sets of R code called packages, which can be installed at once in the `tidyverse` package. These packages contain sets of functions that facilitate data analysis and visualization with R. After you've run the `install.packages()` once (this is already done for you if you're using the server version of R) you can load that particular package with the `library()` function - you'll need to load the libraries that you'd like to use every time you restart Rstudio. This seems like a pain, but is actually useful because you can end up with dozens of R libraries and keeping only a few loaded at a time can help to save space. 
+
+*Sidebar, if you're not using the server version of R:* The first time that you want to use an R package on a computer, you need to install it. To do this lab, you'll need to run`install.packages("tidyverse")` before proceeding.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(lubridate)
+```
+
+The next thing that we need to do is load our dataset into R. In Lab 1b we'll work through an example of how to load data from an external csv file (which is how most data are stored in practice), but for this first lab we'll work with data that has been pre-formatted in R. To load an .RData file, we use the `load()` function. You can also do this step by going to  `File > Open File` on the Rstudio top menu bar, and then selecting the .Rdata file to load, but it's better to do it from the actual code, so that you can save it and all of your steps are reproducible. 
+
+```{r}
+# Load .RData file with Boston & Phoenix climate data 
+load("data/BOSPHO_climate.RData")
+
+```
+
+When you load the .RData file, this should create an object in your Rstudio "Environment" panel (usually in the upper right box of Rstudio software) called `BOS.PHO.climate`. `BOS.PHO.climate` is a tibble object; you can see that this tibble has 54,962 rows (observations) and 5 columns (variables). We can take a look at the tibble summary by running:
+
+```{r}
+BOS.PHO.climate
+```
+
+From this tibble summary output, we can see that the dimensions (numbers of rows and columns of the data) in addition to the variable (column) names and the class of the data in each variable. In this tibble, the `station` variable is a character class (letters), the `date` is a date class, `tmax` and `tmin` are integers, and `precip` is a numeric decimal value. 
+
+Now that we've looked at the tibble, let's make our first ggplot, of the maximum temperature in Boston and Phoenix over the whole time period. 
+
+```{r}
+# Plot Phoenix and Boston maximum temperature
+ggplot(data = BOS.PHO.climate) + 
+  geom_line(mapping = aes(x = date, y = tmax, col=station)) +
+  labs(x = "Date", y = "Maximum Temperature [C]")
+
+```
+
+The syntax of the ggplot function and arguments should look familiar from the R for Data Science reading. As a reminder, the first argument to ggplot identifies the tibble for plotting, and then `geoms` are added that identify how the data are mapped onto the plot. For this plot, we are mapping `date` onto the x-axis, `tmax` onto the y-axis, and coloring the lines by station. We can also change the axis labels by adding the `labs` function to the `ggplot` list. 
+
+***
+**Code Challenge 1:
+Create a plot that shows the daily precipitation values for the whole time series for Boston and Phoenix.**
+
+***
+
+### 2. Climatology
+
+The data that we've visualized so far are weather data (daily values), and aggregating these data into a climatology allows us to determine whether any one day, month, or year is different from the long-term normal value for that area. For transforming weather data into climatology, a 30-year averaging period is typically used because this period captures many high/low years that can vary with weather patterns like El Niño/La Niña, etc. 
+
+Climatological periods are defined by the World Meteorological Organization as a 30-year interval that starts with a year that ends in a 1 and end on a year that ends on a 0, so the nearest climatological period to 2017 is 1981-2010. This is also referred to as a climatological "normal" period because we use it to compare whether any paricular date/year is hotter/colder/wetter/drier than normal. The first step for our climatology analysis is to clip our data to 1981-2010. To do this, we'll use the `filter()` function from the `tidyverse` package. In next week's lab reading, you'll learn more about `filter()` and other data manipulation functions, but we'll get started by using some here so that you can start to see how they work in context. 
+
+For almost all of the "data processing" functions in the tidyverse packages, the first argument is the tibble that we'd like to work with. So, the first argument that we send to the `filter()` function is the tibble that we'd like to clip our data from, and the second argument describes how we'd like to clip the data. Here, the second argument is using another function -- `year()` -- to return just the year from the `date` variable. We're using the `year()` function to only select the years that are greater than 1980 and less than 2011. (Equivalently, we could have written `year(date) >= 1981 & year(date) <= 2010` with less than/greater than or equal for this second argument). 
+
+```{r}
+# Clip out 1981-2010 in BOS from the climate data
+BOS.climrecent <- filter(BOS.PHO.climate, year(date) > 1980 & year(date) < 2011,
+                     station == "BOSTON MA US")
+
+# Plot Phoenix and Boston maximum temperature, 1981-2010
+ggplot(data = BOS.climrecent) + 
+  geom_line(mapping = aes(x = date, y = tmax))
+
+```
+
+The next step is to take the 30-year average for maximum temperature on each day, so that we can determine whether any particular day in a year is hotter/colder than "normal". We'll do this with a set of three functions: 
+
+1. `mutate()` to add a column with just the month & day for each date (removing year)
+2. `group_by()` to define the month-day column as the grouping variable
+3. `summarize()` to calculate the 30-year statistics over the grouping variable
+
+```{r, warning=FALSE}
+# Add a new tibble column with just month & day from date
+BOS.climrecent.v2 <- mutate(BOS.climrecent, 
+                     month.day = as.Date(format(date, format = "%m-%d"), format = "%m-%d"))
+
+# Remove leap year dates by removing days that are NA: small detail, simplifies climatology
+BOS.climrecent.v2 <- BOS.climrecent.v2[!is.na(BOS.climrecent.v2$month.day),]
+
+# Group tibble by month.day for climatology
+BOS.clim.grouped <- group_by(BOS.climrecent.v2, month.day)
+
+# Calculate 30-year average tmax for each day of the year
+BOS.tmax30yr <- summarize(BOS.clim.grouped, tmax.mean = mean(tmax, na.rm=TRUE))
+
+# Plot Boston climatological maximum temperature, 1981-2010
+ggplot(data = BOS.tmax30yr) + 
+  geom_line(mapping = aes(x = month.day, y = tmax.mean)) + 
+  labs(x = "Date", y = "Maximum Temperature [C]")
+
+```
+
+***
+**Code Challenge 2:
+Repeat the steps that we used here to calculate and visualize the 30-year climatological mean daily maximum temperature for Phoenix.**
+
+***
+
+Next, we'll calculate the difference between the weather data values of daily maximum temperature and the climatological normal maximum temperature. The first step to doing this is to add a column with the 30-year mean values for each date. We'll use the `rep()` function to repeat our 30-year climatology 30 times, to match the length of the data from 1981-2010. We'll add the column with the 30-year climatology to our dataset with `mutate()`. And then in the next step, we'll use `mutate()` again to make a new column that is tmax - tmax.mean. 
+
+```{r}
+# Add 30-year mean daily max temp to new tibble
+BOS.climatology <- mutate(BOS.climrecent.v2, 
+                          tmax.mean = rep(BOS.tmax30yr$tmax.mean, 30))
+
+# Add column for difference between daily maximum temperature and the climatological mean
+BOS.climatology <- mutate(BOS.climatology, 
+                          tmax.diff = tmax - tmax.mean)
+
+# Plot Boston difference from climatological maximum temperature, 1981-2010
+ggplot(data = BOS.climatology) + 
+  geom_line(mapping = aes(x = date, y = tmax.diff)) + 
+  labs(x = "Date", y = "Temperature difference from 30-year average [C]")
+
+```
+
+***
+**Code Challenge 3:
+Repeat the steps that we used here to calculate and visualize the difference between the daily maximum tempearture and the 30-year climatological mean daily maximum temperature for Phoenix.**
+
+***
+
+### 3. Weather predictability
+
+Departures from the mean climate can influence ecological interactions and long-term evolutionary adaptation. They can also have large effects on public health, which we will dive into in next week's lab. For example, in Boston our infrastructure is built to handle large amounts of snow during the winter, but the same (but unexpected) snowstorm further South could cripple infrastructure for days. Similarly, heat stress is an important factor when considering climate change: if infrustructure is acclimated to a particular temperature within a city, unexpected heat events can have devastating consequences for people who cannot find refuge from the extreme heat. 
+
+We can assess predictability of weather within a particular location by comparing daily weather patterns against the 30-year climatology. We’ll define the weather as being more unpredictable when it deviates more from these long-term trends. We've already done the groundwork to assess predictability, through calculating the difference between daily maximum temperature and the 30-year average. To visualize this difference, we can look at a histogram (probability density) of the departures from the long-term average: 
+
+```{r}
+# Plot Boston difference from climatological maximum temperature, 1981-2010
+ggplot(data = BOS.climatology) + 
+  geom_density(mapping = aes(x = tmax.diff)) +
+  labs(x = "Daily max temp difference from 30-year normal [C]", y = "Probability") 
+
+```
+
+This plot shows that in Boston, there about a 0.4% chance of having a day that is 20 degrees warmer or colder than average. This is a rather small probability, but certainly non-negligible. We can use the probability density for Boston maximum temperature departures as a benchmark to assess whether Phoenix's maximum temperatures are more or less predictable than Boston's. 
+
+***
+**Code Challenge 4:
+Produce a plot that shows the probability density for the difference between daily maximum tempearture and the 30-year climatological mean for Phoenix. From comparing the probability densities of maximum temperature departures for Boston and Phoenix, which city is more likely to experience an abnormally hot day?**
+
+***

@@ -1,0 +1,81 @@
+"subject_id","c_q1","c_q2","c_q3","c_q4","c_q5"
+"1A","1","4","No",2,"1"
+"1B","1","3","No",1,"1"
+"1C","1","3","Not really, it was very simple",1,"1"
+"1D","1","1","No",2,"0"
+"1E","1","1","Not at all",1,"1"
+"1G","1","5","It was normal, just like every day",1,"1"
+"1J","1","1","No. It was easy",1,"1"
+"1K","1","1","It was pretty easy",1,"1"
+"1M","1","5","No",1,"1"
+"1P","1","4","No",1,"1"
+"1T","1","4","No",1,"1"
+"2A","1","1","No",2,"1"
+"2B","1","2","Reduntant questions",1,"1"
+"2C","3","2","No",1,"1"
+"2D","3","4","No",1,"1"
+"2E","2","4","Clarity form meanings",4,"1"
+"2F","2","4",NA,1,"1"
+"2G","3","2","Defining inside/outside",1,"1"
+"2H","2","1","Confused by whole process",1,"1"
+"2I","3",NA,NA,NA,NA
+"2J","1","1","Very straightforward",3,"1"
+"2K","3",NA,NA,NA,NA
+"2L","2","5","Activity Log & Phone call confusion",1,"0"
+"2M","3","2","Telling about swim, survey/act log, cheap hook broke",1,"1"
+"2N","2","1","Concern about getting iButton wet",1,"1"
+"2O","2","1","Periods of the daily survey",1,"1"
+"2P","2",NA,NA,NA,"0"
+"2R","1","1",NA,1,"1"
+"2S","1","2","No",1,"0"
+"2T",NA,NA,NA,NA,NA
+"3A","2",NA,"Simple",NA,NA
+"3B","1","3","""End-of-day"" Survey",1,"1"
+"3C","1",NA,NA,NA,NA
+"3E","1","4","Daily survey online arrival (Isn't a day later)",1,"1"
+"3F","1","4","Clear",1,NA
+"3G","1","2","Clear",1,NA
+"3H","1","1","Nothing",1,"1"
+"3I","1",NA,"Nothing",1,"0"
+"3J","1","3","Nothing",1,"0"
+"3K","1","1","No",1,NA
+"3M","1","3","Daily survey, the last question",1,"1"
+"3N","1","1","Nothing",1,"1"
+"3O","1",NA,"Nothing",1,"1"
+"3R","3","4","No",2,"0"
+"3S","1","4","No",1,"1"
+"3T","1","5","Nothing",5,NA
+"3U","4","1","No",1,"1"
+"3V","1","5","No",1,"1"
+"3W","1","5","No",1,"1"
+"3Y","3",NA,NA,NA,NA
+"4A","2",NA,NA,1,NA
+"4B","2","5",NA,1,NA
+"4C",NA,NA,NA,1,NA
+"4D","2","5",NA,1,NA
+"4E","3","2","No",1,NA
+"4F","2","1","No",1,NA
+"4G","2","5",NA,1,NA
+"4H","3","5",NA,1,NA
+"4I","1","4","No",1,"1"
+"4J","1",NA,NA,NA,NA
+"4K","3","4","No",1,"1"
+"4L","1","1","No",2,NA
+"4M","3","2","Inside/Outside",1,NA
+"4N","2","3",NA,1,NA
+"4O","2","4","Meeting times, more specific, integrity",1,"1"
+"4P","2","4","No",1,"1"
+"4Q","4","5","No",1,"1"
+"4R","2","3","No",1,"1"
+"4S",NA,NA,"Nope",1,NA
+"5A","1","1","No",1,"1"
+"5B","1","1","No, just kept it in bag when it rained",1,"1"
+"5C","3","1","Nope",1,"0"
+"5D","3","1","No",1,NA
+"5E","1","4","No",1,"1"
+"5F","1","1","No",2,"1"
+"5G","1","1","No. Very straighforward",1,"1"
+"5H","1","1","No",1,NA
+"5I","1","1","Get more specific daily survey",5,"1"
+"5J","1","2","No, not really",1,"0"
+"5K","1","1","No",1,"0"

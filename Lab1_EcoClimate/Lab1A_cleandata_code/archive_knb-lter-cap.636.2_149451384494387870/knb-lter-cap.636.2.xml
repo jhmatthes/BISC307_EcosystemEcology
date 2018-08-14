@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml packageId="knb-lter-cap.636.2" scope="system"
+  system="https://pasta.edirepository.org"
+  xmlns:eml="eml://ecoinformatics.org/eml-2.1.1"
+  xmlns:stmml="http://www.xml-cml.org/schema/stmml_1.1"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://nis.lternet.edu/schemas/EML/eml-2.1.1/eml.xsd">
+  <access authSystem="https://pasta.edirepository.org/authentication"
+    order="allowFirst" scope="document" system="https://pasta.edirepository.org">
+    <allow>
+      <principal>uid=CAP,o=LTER,dc=ecoinformatics,dc=org</principal>
+      <permission>all</permission>
+    </allow>
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset>
+    <title>CAP LTER weather stations, Papago Park and Lost Dutchman State Park: 2010-2016</title>
+    <creator id="jonathan.allen">
+      <individualName>
+        <givenName>Jonathan</givenName>
+        <surName>Allen</surName>
+      </individualName>
+      <organizationName>Allen Analytics LLC</organizationName>
+      <electronicMailAddress>joallen@asu.edu</electronicMailAddress>
+    </creator>
+    <creator id="nancy.grimm">
+      <individualName>
+        <givenName>Nancy</givenName>
+        <surName>Grimm</surName>
+      </individualName>
+      <organizationName>Arizona State University</organizationName>
+      <electronicMailAddress>nbgrimm@asu.edu</electronicMailAddress>
+      <userId directory="orcid.org">http://orcid.org/0000-0001-9374-660X</userId>
+    </creator>
+    <creator id="sharon.hall">
+      <individualName>
+        <givenName>Sharon</givenName>
+        <surName>Hall</surName>
+      </individualName>
+      <organizationName>Arizona State University</organizationName>
+      <electronicMailAddress>sharonjhall@asu.edu</electronicMailAddress>
+    </creator>
+    <creator id="jason.kaye">
+      <individualName>
+        <givenName>Jason</givenName>
+        <surName>Kaye</surName>
+      </individualName>
+      <organizationName>Penn State</organizationName>
+      <electronicMailAddress>jpk12@psu.edu</electronicMailAddress>
+    </creator>
+    <creator id="dan.childers">
+      <individualName>
+        <givenName>Dan</givenName>
+        <surName>Childers</surName>
+      </individualName>
+      <organizationName>Arizona State University</organizationName>
+      <electronicMailAddress>dan.childers@asu.edu</electronicMailAddress>
+    </creator>
+    <metadataProvider id="stevan.earl">
+      <individualName>
+        <givenName>Stevan</givenName>
+        <surName>Earl</surName>
+      </individualName>
+      <organizationName>Arizona State University</organizationName>
+      <electronicMailAddress>stevan.earl@asu.edu</electronicMailAddress>
+      <userId directory="orcid.org">http://orcid.org/0000-0002-4465-452X</userId>
+    </metadataProvider>
+    <pubDate>2017-02-27</pubDate>
+    <abstract>The CAP LTER maintains two 10-m micrometeorological stations in the greater Phoenix metropolitan area, including at Lost Dutchman State Park and near the Desert Botanical Garden at Papago Park. The local terrain at both sites is flat or gently sloping Sonoran desert, and the vegetation canopy consists of patchy coverage of desert shrubs and trees. The dominant vegetation species include bursage (Ambrosia deltoidea) and creosote bush (Larrea tridentata), while minor species include palo verde (Parkinsonia microphylla) and saguaro cactus (Carnegiea gigantea). Wind speed and direction, incoming solar radiation, air temperature, relative humidity, and precipitation (see table below) have been monitored nearly continuously since the fall of 2010. Each variable is measured every 5 seconds and the average (or total for precipitation and total solar radiation) is saved to a data logger every 10 minutes.</abstract>
+    <keywordSet>
+      <keyword>weather</keyword>
+      <keyword>urban</keyword>
+      <keyword>temperature</keyword>
+      <keyword>solar radiation</keyword>
+      <keyword>pyranometers</keyword>
+      <keyword>precipitation</keyword>
+      <keyword>relative humidity</keyword>
+      <keyword>wind</keyword>
+      <keyword>wind direction</keyword>
+      <keyword>wind speed</keyword>
+      <keyword>climate</keyword>
+      <keywordThesaurus>LTER controlled vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>disturbance patterns</keyword>
+      <keyword>climate and heat</keyword>
+      <keywordThesaurus>LTER core areas</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>lost dutchman state park</keyword>
+      <keyword>papago park</keyword>
+      <keyword>desert botanical garden</keyword>
+      <keywordThesaurus>Creator Defined Keyword Set</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>cap lter</keyword>
+      <keyword>cap</keyword>
+      <keyword>caplter</keyword>
+      <keyword>central arizona phoenix long term ecological research</keyword>
+      <keyword>arizona</keyword>
+      <keyword>az</keyword>
+      <keyword>arid land</keyword>
+      <keywordThesaurus>CAPLTER Keyword Set List</keywordThesaurus>
+    </keywordSet>
+    <intellectualRights>Copyright Board of Regents, Arizona State University. This information is released to the public and may be used for academic, educational, or commercial purposes subject to the following restrictions. While the CAP LTER will make every effort possible to control and document the quality of the data it publishes, the data are made available 'as is'. The CAP LTER cannot assume responsibility for damages resulting from mis-use or mis-interpretation of datasets, or from errors or omissions that may exist in the data. It is considered a matter of professional ethics to acknowledge the work of other scientists that has resulted in data used in subsequent research. The CAP LTER expects that any use of data from this server will be accompanied with the appropriate citations and acknowledgments. The CAP LTER encourages users to contact the original investigator responsible for the data that they are accessing. Where appropriate, researchers whose projects are integrally dependent on CAP LTER data are encouraged to consider collaboration and/or co-authorship with original investigators. The CAP LTER requests that users submit to the Julie Ann Wrigley Global Institute of Sustainability at Arizona State University reference to any publication(s) resulting from the use of data obtained from this site.</intellectualRights>
+    <distribution>
+      <online>
+        <onlineDescription>CAPLTER Metadata URL</onlineDescription>
+        <url>https://sustainability.asu.edu/caplter/data/data-catalog/view/knb-lter-cap.636.2/xml/</url>
+      </online>
+    </distribution>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>CAP LTER study area</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-111.9476</westBoundingCoordinate>
+          <eastBoundingCoordinate>-111.9415</eastBoundingCoordinate>
+          <northBoundingCoordinate>33.4612</northBoundingCoordinate>
+          <southBoundingCoordinate>33.4554</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2006-05-10</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2016-12-13</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+    </coverage>
+    <contact>
+      <organizationName>Julie Ann Wrigley Global Institute of Sustainability, Arizona State University</organizationName>
+      <positionName>Data Manager</positionName>
+      <address>
+        <deliveryPoint>PO Box 875402</deliveryPoint>
+        <city>Tempe</city>
+        <administrativeArea>AZ</administrativeArea>
+        <postalCode>85287</postalCode>
+        <country>USA</country>
+      </address>
+      <electronicMailAddress>caplter.data@asu.edu</electronicMailAddress>
+    </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <para>
+            <emphasis>introduction</emphasis>: Two meteorological measurement
+  stations have been installed in the Central Arizona-Phoenix area. The
+  first station is located at the Lost Dutchman State Park (LDP) in
+  Goldfield, Arizona. This station used an existing tower and was
+  instrumented with new sensors, datalogger, and power system in May
+  2006. The second station is located at the Desert Botanical Garden
+  (DBG) in Phoenix, Arizona. A new tower was mounted on a concrete pad
+  south of the DBG trails and new sensors were installed in October
+  2006. These stations have been used to collect meteorological
+  measurements that are inputs to gas and particle dry deposition
+  models. This manual is intended to document the installation,
+  operation, and maintenance procedures for the LDP and DBG
+  meteorological measurement stations. More detailed information can be
+  found in the Campbell Scientific manuals for each product (http:
+  //www.campbellsci.com).
+</para>
+          <para>
+            <emphasis>site descriptions</emphasis>: The Lost Dutchman State Park
+  (LDP) meteorological station is approximately 55 km east of downtown
+  Phoenix, Arizona, at the base of the Superstition Mountains to the
+  north and east, and bordered by desert and low density residential
+  land to the south and west. The Desert Botanical Garden (DBG)
+  meteorological station is approximately 12 km east of downtown
+  Phoenix, within the city of Phoenix and surrounded by urban
+  industrial, residential, and recreational land. The vegetation canopy
+  at both sites consists of patchy coverage of desert shrubs and trees.
+</para>
+          <para>
+            <emphasis>measurement sensors</emphasis>: The towers are equipped with
+  sensors to measure wind speed, wind direction, incoming solar
+  radiation, air temperature, relative humidity, and precipitation. A
+  timestamp and record number saved by the datalogger for each
+  measurement. Each variable is measured every 5 seconds and the average
+  (or total for precipitation and total solar radiation) is saved to the
+  datalogger every ten minutes.
+</para>
+          <para>
+            <emphasis>maintenance</emphasis>: Proper maintenance of the weather
+  station is essential to obtaining valid data. A regular program of
+  inspection and maintenance ensures that equipment is in good operating
+  condition. Calibration, sensor testing, and sensor repairs are done by
+  Campbell Scientific. The maintenance and calibration schedule for the
+  towers and sensors is as follows: tower, enclosure, wiring, and
+  mounting hardware: check for damage during each site visit; replace
+  sensor cables as necessary. Pyranometer: check the level and clean the
+  sensor head at each visit (weekly is recommended by Campbell);
+  calibrate annually. Rain gage: clean the funnel and level the gage
+  monthly; calibrate annually. Anemometer: visually inspect the
+  propeller and wind vane for smooth motion monthly. Temperature/RH
+  Probe: check the filter and radiation shield for contamination
+  monthly; clean semiannually; calibrate annually. Solar Panel: clean
+  the glass semi-annually (or more frequently if it becomes dirty).
+</para>
+          <para>
+            <emphasis>data collection</emphasis>: Data are downloaded manually at
+  approximately 6-month intervals.
+</para>
+        </description>
+      </methodStep>
+    </methods>
+    <dataTable id="636_tower_data_dbg_d5dde98db1565c9b03f791a67720f58e.csv">
+      <entityName>636_tower_data_dbg_d5dde98db1565c9b03f791a67720f58e.csv</entityName>
+      <entityDescription>Micrometeoroligical data from a CAP LTER weather station located near the Desert Botanical Garden in Papago Park, AZ. Data are 10-min averages of measurments collected at 5-second intervals.</entityDescription>
+      <physical>
+        <objectName>636_tower_data_dbg_d5dde98db1565c9b03f791a67720f58e.csv</objectName>
+        <size unit="byte">42570918</size>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+              <quoteCharacter>"</quoteCharacter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+        <distribution>
+          <online>
+            <url>https://pasta.lternet.edu/package/data/eml/knb-lter-cap/636/2/3170bf3c4e32248f6dac189899b7d268</url>
+          </online>
+        </distribution>
+      </physical>
+      <additionalInfo>
+        <para>Julie Ann Wrigley Global Institute of Sustainability Informatics processed this data object with the following actions: data processing action: replace empty, nulls, /N, NANs with NA</para>
+      </additionalInfo>
+      <attributeList>
+        <attribute>
+          <attributeName>site_code</attributeName>
+          <attributeDefinition>study location</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>study location</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>timestamp</attributeName>
+          <attributeDefinition>date and time of observation</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD HH:MM:SS</formatString>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>airtc_avg</attributeName>
+          <attributeDefinition>air temperature</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>rh</attributeName>
+          <attributeDefinition>relative humidity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>slrkw_avg</attributeName>
+          <attributeDefinition>average solar radiation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>kilowattPerMeterSquared</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>slrmj_tot</attributeName>
+          <attributeDefinition>total solar radiation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>megajoulePerMeterSquared</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>ws_ms_avg</attributeName>
+          <attributeDefinition>wind speed</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>metersPerSecond</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>wind_dir</attributeName>
+          <attributeDefinition>wind direction</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>rain_mm_tot</attributeName>
+          <attributeDefinition>precipitation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimeter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+    </dataTable>
+    <dataTable id="636_tower_data_ldp_2f4558296a4fcca862ce0c37b6bada55.csv">
+      <entityName>636_tower_data_ldp_2f4558296a4fcca862ce0c37b6bada55.csv</entityName>
+      <entityDescription>Micrometeoroligical data from a CAP LTER weather station located at the Lost Dutchman State Park, AZ. Data are 10-min averages of measurments collected at 5-second intervals.</entityDescription>
+      <physical>
+        <objectName>636_tower_data_ldp_2f4558296a4fcca862ce0c37b6bada55.csv</objectName>
+        <size unit="byte">50073551</size>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+              <quoteCharacter>"</quoteCharacter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+        <distribution>
+          <online>
+            <url>https://pasta.lternet.edu/package/data/eml/knb-lter-cap/636/2/9cc379b09894fb77554dfc407e02957b</url>
+          </online>
+        </distribution>
+      </physical>
+      <additionalInfo>
+        <para>Julie Ann Wrigley Global Institute of Sustainability Informatics processed this data object with the following actions: data processing action: replace empty, nulls, /N, NANs with NA</para>
+      </additionalInfo>
+      <attributeList>
+        <attribute>
+          <attributeName>site_code</attributeName>
+          <attributeDefinition>study location</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>study location</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>timestamp</attributeName>
+          <attributeDefinition>date and time of observation</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD HH:MM:SS</formatString>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>airtc_avg</attributeName>
+          <attributeDefinition>air temperature</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>rh</attributeName>
+          <attributeDefinition>relative humidity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>slrkw_avg</attributeName>
+          <attributeDefinition>average solar radiation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>kilowattPerMeterSquared</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>slrmj_tot</attributeName>
+          <attributeDefinition>total solar radiation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>megajoulePerMeterSquared</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>ws_ms_avg</attributeName>
+          <attributeDefinition>wind speed</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>metersPerSecond</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>wind_dir</attributeName>
+          <attributeDefinition>wind direction</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>rain_mm_tot</attributeName>
+          <attributeDefinition>precipitation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimeter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+    </dataTable>
+  </dataset>
+  <additionalMetadata>
+    <metadata>
+      <stmml:unitList xmlns:stmml="http://www.xml-cml.org/schema/stmml_1.1">
+        <unit id="kilowattPerMeterSquared" multiplierToSI="1000"
+          name="kilowattPerMeterSquared" parentSI="wattPerMeterSquared" unitType="irradiance">
+          <description>average amount of energy per square meter of surface during the observation period</description>
+        </unit>
+        <unit id="megajoulePerMeterSquared" multiplierToSI="1000000"
+          name="megajoulePerMeterSquared"
+          parentSI="joulePerMeterSquared" unitType="irradiance">
+          <description>total amount of energy per square meter of surface during the observation period</description>
+        </unit>
+      </stmml:unitList>
+    </metadata>
+  </additionalMetadata>
+</eml:eml>

@@ -1,0 +1,245 @@
+---
+title: 'BISC 307, Lab 1b: Ecoclimate & Public Health'
+author: "Prof. Jackie Hatala Matthes, Fall 2017"
+date: 'Lab: 19 September'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+### Lab 1b Objectives
+1. Learn to read messy (i.e., real) csv data files into R.
+2. Use the five tidyverse verbs - filter, arrange, select, mutate, and summarize - as functions to manipulate real data.
+3. Extending what you learned about Phoenix's regional climatology in the last lab, investigate whether (and if so, how) individually experienced temperatures (IETs) on a daily timescale vary more or less than regional climate patterns.
+
+### 1. Reading files into R
+In this lab, we'll learn to work with Rstudio to read, summarize, and visualize a dataset of Inidividually Exerienced Temperatures (IETs) from the [Central Arizona-Phoenix (CAP) Long-Term Ecological Research (LTER) site](https://sustainability.asu.edu/caplter/). Our lab objectives for today will practice and build on the sections on Data Transformation that you read in preparation for this week's lab, [Sections 5.1-5.6 from the R for Data Science book](http://r4ds.had.co.nz/transform.html). 
+
+The data for this lab are stored as `.csv` files, which stands for comma-separated values. `csv` files are a plain text format for storing tabular data, such as spreadsheets, and because they are plain text (as opposed to an Excel workbook or Google sheets) they are smaller, much more portable across computer platforms, and generally easier to work with. If you open a `csv` file with a plain text editor, like WordPad on Windows or textEdit on a Mac, you'll see rows of data where each column is separated by a comma (hence, comma-separated values). You can also open `csv` files with Excel or Google sheets, where they are usually automatically converted into separate columns. Importantly, you can also store Excel and Google sheets as `csv` files, which is the generally preferred long-term storage format for reproducible research because it is plain text and more stable as versions of Excel and Google sheets softwares change.
+
+To load a csv file into Rstudio, we'll use the `read_csv()` function from the `tidyverse`. R also has a base function called `read.csv()` that doesn't require the `tidyverse` package, but `read_csv()` has a few advantages over the base function. Helpfully, `read_csv()` preserves data classes, recognizes dates and times, and automatically loads data as tibbles (rather than data frames).
+
+To read a data file into R, you need to know how to tell R where to find it. Computers store files in directories (i.e., folders) that are organized hierarchically. By listing the directory path to the file you want to use, you can give R directions on how to find it. Within Rstudio, you set a `working directory`, which is the starting point of where R will start to look for your files. The best thing to do in this class is to make the unzipped lab folder for each week a separate directory (folder), for example `BISC307_Lab1b`, and then to make that folder your working directory for that lab session. 
+
+In R, you can set your working directory a few different ways:
+
+1. In the `Files` panel in the lower right windowpane of Rstudio, navigate to the directory that you want to be your working directory and go inside that folder. Click `More` within the `Files` panel, then `Set As Working Directory`. 
+
+2. On the top Rstudio menu bar, click `Session` then `Set Working Directory` then you can either choose your working directory or set it `To Source File Location`, which should work for our labs.
+
+3. You can use the `setwd()` function in the `Console` window with the path to your working directory written inside the function surrounded by `' '`.
+
+The IETs dataset is comprised of five csv files, and you can read more about each file in the metadata within the IET_metadata.txt file included in the `data/` directory of the .zip folder for this week. The metadata contains important information that is necessary for interpreting the data, for example the meaning of column names, units for numeric values, etc. These first exercises will only work with two of the csv files from this dataset - the main IET dataset and the background participant survey - but you can use the other files, if you'd like, for your independent investigation at the end of lab. For now, let's load the two csv files that we'll be working with.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(stringr)
+
+# Read IETs csv file into tibble called `IETs`
+IETs <- read_csv("data/647_IET_measurements_50e72be656c7407bd07e316061beeb1d.csv")
+
+# Read background survey csv file into tibble called `Bkgd`
+Bkgd <- read_csv("data/647_background_surveys_546a5d337c7a39922a4b65ced4bb29fe.csv")
+
+# Look at the IETs and Bkgd tibbles to see what the data look like
+IETs
+Bkgd
+```
+
+As we can see from the tibbles, they're linked by the `Subject ID`, and if you read the `IET_metadata.txt` file, you'll learn that the first number in each `Subject ID` corresponds to a neighborhood, and the letter corresponds to each unique study participant from that neighborhood. The columns in the IETs tibble are rather straightforward to interpret, but there are SO many columns of data in the Bkgd tibble that correspond to survey answers for individual questions. We'll focus on three of these later on in this lab, but you'll need to read the metadata if you'd like to use information from additional questions.  
+
+## Visualizing differences in IETs by neighborhood and time of day 
+
+The first thing that we'll do is examine the differences in IETs grouped by neighborhood. To do this, we'll need to start using the tidyverse Data Transformation verbs to get the data in the right format that we'd like. Remember that the IETs column for `Subject ID` has the neighborhood attached, but also the participant ID within each neighborhood. If we want to group things by neighborhood, we need to use `mutate()` to create a new column with just neighborhood, and while we're at it, we'll also create a new column with just ID. 
+
+To separate out the neighborhood piece of the `Subject ID` from the letter that IDs each subject, we'll use a function called substring - `str_sub()` from the `stringr` tidyverse package - that clips a string based on the numeric order of letters within that string. For example, the `Subject ID` string in the first row of the IETs tibble is `1A`, where we want to clip out the first character `1` into the new neighborhood column and the second character `A` into the new ID column. 
+
+We'll use these stringr functions in this lab, but you shouldn't worry about understanding all the details: the main point of this lab is to focus on the use of the data transformation verbs, but we can't avoid having to clean things up with stringr in order to use this dataset. Remember that learning R is like learning a new language, and you can think about the stringr commands in this lab as an immersion experience where you might not understand every detail, but can focus on the purpose of how these functions are helping us with the key Data Transformation verbs.
+
+```{r}
+# Make a new tibble with columns for neighborhood and ID
+IETs_nbh <- mutate(IETs, neighborhood = str_sub(`Subject ID`,1,1), 
+                 ID = str_sub(`Subject ID`,2,2))
+
+# Look at the new tibble
+IETs_nbh
+```
+
+We can then use `ggplot` to visualize the difference in IETs across neighborhoods. When we make the ggplot, R will warn us that it removed values that were NA in the data, but this is okay and you can ignore it.
+
+```{r}
+# Plot IETs by neighborhood, across all time periods
+ggplot(IETs_nbh) + geom_boxplot(mapping = aes(x = neighborhood, y = temperature))
+
+```
+
+This plot is interesting and it sort of looks like the IETs from neighborhood 5 are lower than those from the other neighborhoods. However, this plot summarizes the data across all times of day, which might be introducing much more varibility into the range within each neighborhood. 
+
+To get a closer look at differences in IETs by time of day, let's summarize the data within each time period (i.e., 12am-4am, 4am-8am, etc.) as well. To do this, we'll need to use `mutate()` again to grab the time period strings from the `period` column of the IETs_nbh dataset, since they're also attached to the day of the week. We'll again use `mutate()`, this time with the function `str_split_fixed()` from the `stringr` package to separate the period strings into day of week (dow) and hours (hrs) columns at the "comma and space" within each string. 
+
+```{r}
+# Make new columns for day of week (dow), time period (hrs), and am/pm (ampm)
+IETs_nbh_time <- mutate(IETs_nbh, 
+                 dow = str_split_fixed(period, ", ", n = 2)[,1],
+                 hrs = str_split_fixed(period, ", ", n = 2)[,2])
+
+# Look at the new tibble
+IETs_nbh_time
+
+# Plot: what is not ideal about this figure?
+ggplot(IETs_nbh_time) + 
+  geom_boxplot(mapping = aes(x = hrs, y = temperature, color = neighborhood))
+
+```
+
+*Note:* In practice, instead of using `mutate()` twice to create `IETs_nbh` and then `IETs_nbh_time`, we could have done a single `mutate()` function that added all the columns at once, but I broke these apart so that we could focus on individual pieces. Whenever you are writing your code, after you get something that works, you should get into the practice of looking back through what you did to recognize whether you could have combined steps to make things more efficient.
+
+We can fix the order of the x-axis categories to be a more intuitive order (instead of alphanumeric sorted) by adding a `scale_x_discrete()` function to ggplot, setting the limits to the order of the categories that we want to display.
+
+```{r}
+# Better Plot
+ggplot(IETs_nbh_time) + 
+  geom_boxplot(mapping = aes(x = hrs, y = temperature, color = neighborhood)) +
+  scale_x_discrete(limits = c("12am-4am", "4am-8am", "8am-12pm", "12pm-4pm", "4pm-8pm", "8pm-12am"))
+
+# New colors - you can run display.brewer.all() in the Console window to see all options
+ggplot(IETs_nbh_time) + 
+  geom_boxplot(mapping = aes(x = hrs, y = temperature, color = neighborhood)) +
+  scale_x_discrete(limits = c("12am-4am", "4am-8am", "8am-12pm", "12pm-4pm", "4pm-8pm", "8pm-12am")) +
+  scale_colour_brewer(palette = "Set1")
+
+```
+
+***
+**Code Challenge 1:
+Add the `facet_wrap()` function to the ggplot above to make a separate sub-plot for each day of the week. Are there some days that have much more or much less variability?**
+
+***
+
+## Summarizing differences in IETs by neighborhood by time of day 
+
+In addition to visualizing the IETs dataset, we'll also want to calculate summary statistics to report how much one group was higher/lower than another. To do this, we'll calculate summary statistics for the mean and standard deviation of temperature by neighborhood, and then by neighborhood and time interval. To do this we'll use the `group_by()` function to set the levels at which we'd like to calculate summary statistics and then `summarize()` to actually calculate the statistics. When we're calculating summary stats with `summarize()` you should almost always include `na.rm=TRUE`, which will skip `NA` values in your dataset because the default in R is to return `NA` if it is trying to do a calculation with something that includes `NA` values. We'll calculate the mean and standard deviation, and also include the number of values within each group (this would be the n = ## you would report to show how many replicates your statistics represent).
+
+```{r}
+# GROUP BY NEIGHBORHOOD
+# Group the IETs_nbh_time tibble by neighborhood 
+IETs_nbh_grp <- group_by(IETs_nbh_time, neighborhood)
+
+# Calculate mean temperature & standard deviation of temperature for each neighborhood, for each time period
+IETs_nbh_sum <- summarize(IETs_nbh_grp, Tmean = mean(temperature, na.rm=TRUE),
+                          Tsd = sd(temperature, na.rm=TRUE),
+                          count = n())
+
+# Look at all the neighborhood summary
+IETs_nbh_sum
+
+# GROUP BY NEIGHBORHOOD & TIME PERIOD
+# Group the IETs_nbh_time tibble by neighborhood and hrs
+IETs_nbh_time_grp <- group_by(IETs_nbh_time, neighborhood, hrs)
+
+# Calculate mean temperature & standard deviation of temperature for each neighborhood, for each time period
+IETs_nbh_time_sum <- summarize(IETs_nbh_time_grp, Tmean = mean(temperature, na.rm=TRUE),
+                               Tsd = sd(temperature, na.rm=TRUE),
+                               count = n())
+
+# Look at all the summary stats of neighborhood x time period
+print(IETs_nbh_time_sum, n = 30)
+
+# Arrange tibble to find the warmest time period & neighborhood
+IETs_sum_sort <- arrange(IETs_nbh_time_sum, desc(Tmean))
+
+# Look at tibble
+IETs_sum_sort
+
+```
+
+***
+**Group Discussion:
+How are the mean maximum temperatures per group relevant to public health and heat stress? How does this vary by neighborhood?**
+
+***
+
+And lastly, just like we used `read_csv()` to read data into R, there is a function called `write_csv()` that will write out a csv file. This is a convenient way to be able to include summary statistics produced with R into documents without having to copy and paste values from Rstudio.
+
+```{r}
+write_csv(IETs_nbh_time_sum, "data/IETs_nbh_time_sum.csv")
+```
+
+***
+**Code Challenge 2:
+Use the `group_by()`, `summarize()`, and `arrange()` functions to find the mean warmest time period, on the warmest day of week, in the warmest neighborhood.**
+
+***
+
+## Visualizing differences in neighborhood age and income 
+
+Now we'll focus on using a second dataset from the IETs study, the responses from voluntary participant background surveys collected before the experiment. Remember that the `Bkgd` tibble has approximately a bajillion columns because the survey was long, so for these exercises, we'll focus on two sets of survey answers: a_q1 = age and a_q6 = income.
+
+The first thing that we'll have to do with the `Bkgd` tibble before we can start summarizing data by neighborhood is use `mutate()` to break apart the `Subject ID` string and add columns for neighborhood and ID like we did for the original IETs tibble. We'll also use the `select()` function to just take the columns for the questions that we're interested in (age and income) to make the tibble more manageable. We can do this in a single step by connecting the `mutate()` and `select()` functions with a pipe `%>%`. As you read in the [R4DS book section 5.6](http://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise), pipes are a way of streamlining multiple data transformation steps within R in a way that is easier to read and faster to execute. 
+
+***
+**Group Discussion:
+How could we have used pipes to streamline the processing code for the IETs neighborhood x time period summary stats table?**
+
+***
+
+```{r}
+# Make new columns for neighborhood and ID, select only survey answers we want
+Bkgd_nbh <- mutate(Bkgd, neighborhood = substr(`Subject ID`,1,1), 
+                   ID = substr(`Subject ID`,2,2)) %>%
+  select(neighborhood, ID, a_q1, a_q6)
+
+# Make set of age labels from IET_metadata instead of age classes 1 - 4
+age_labels <- c("1" = "<35", "2" = "35-49", "3" = "50-64", "4" = "65+")
+
+# Plot age class by neighborhood
+ggplot(Bkgd_nbh) + geom_bar(mapping = aes(x = a_q1, fill=neighborhood)) + 
+  scale_x_discrete("Age", limits = age_labels) +
+  scale_fill_brewer(palette = "Blues", direction = -1)
+
+# Different style of geom_bar plot
+ggplot(Bkgd_nbh) + 
+  geom_bar(mapping = aes(x = a_q1, fill=neighborhood), position = "fill") + 
+  scale_x_discrete("Age", limits = age_labels) +
+  scale_fill_brewer(palette = "Blues", direction = -1)
+
+
+# Make set of income class labels from IET_metadata instead of income classes 1 - 6
+income_labels <- c("1" = "<10k", "2" = "10-30k", "3" = "31-50k", "4" = "51-75k", 
+                   "5" = "76-100k", "6" = "101-150k", "7" = "151-200k", "8" = "200k+")
+
+# Plot income by neighborhood
+ggplot(Bkgd_nbh) + geom_bar(mapping = aes(x = a_q6, fill=neighborhood)) + 
+  scale_x_discrete("Income", limits = income_labels) + 
+  scale_fill_brewer(palette = "Spectral")
+
+```
+
+***
+**Code Challenge 3:
+Create a summary table with the mean income group, mean age group, and number of observations in each, by neighborhood.**
+
+***
+
+
+***
+**LAB REPORT INSTRUCTIONS:**
+
+* Identify one research question related to ecosystem ecology that you'd like to investigate with any of the datasets from Lab 1a and/or Lab 1b. 
+
+* As you structure your data analysis to answer your question, produce an .R script pretending that you are starting from scratch (i.e., don't assume that you have anything loaded from doing the lab exercise). The goal is to be able to hand someone your code and be able to have them re-run your analysis to see what you did and how - this is reproducible research! 
+
+* In addition to your .R script, for the Lab 1 Report you will turn in a text .pdf document no longer than 3 single-space pages in the format oulined within the Lab Report Guidelines. 
+
+* Your Lab 1 Report document must include at least one ggplot figure and one summary table, which counts toward the 3-page limit. 
+
+
+***
+
+
+
+
+
+
+
+

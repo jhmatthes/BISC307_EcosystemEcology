@@ -1,0 +1,5 @@
+Manifest file for archive_knb-lter-cap.636.2_149451384494387870.zip created on Thu May 11 08:44:04 MDT 2017
+636_tower_data_dbg_d5dde98db1565c9b03f791a67720f58e.csv (42570918 bytes)
+636_tower_data_ldp_2f4558296a4fcca862ce0c37b6bada55.csv (50073551 bytes)
+knb-lter-cap.636.2.xml (24283 bytes)
+knb-lter-cap.636.2.report.xml (30247 bytes)
