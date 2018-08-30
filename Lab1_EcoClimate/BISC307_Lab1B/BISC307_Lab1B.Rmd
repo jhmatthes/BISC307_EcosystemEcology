@@ -1,7 +1,7 @@
 ---
-title: 'BISC 307, Lab 1b: Ecoclimate & Public Health'
-author: "Prof. Jackie Hatala Matthes, Fall 2017"
-date: 'Lab: 19 September'
+title: 'BISC 307, Lab 1B: Ecoclimate & Public Health'
+author: "Prof. Jackie Hatala Matthes, Fall 2018"
+date: 'Lab: 18 September'
 output:
   html_document: default
   pdf_document: default
@@ -19,11 +19,11 @@ The data for this lab are stored as `.csv` files, which stands for comma-separat
 
 To load a csv file into Rstudio, we'll use the `read_csv()` function from the `tidyverse`. R also has a base function called `read.csv()` that doesn't require the `tidyverse` package, but `read_csv()` has a few advantages over the base function. Helpfully, `read_csv()` preserves data classes, recognizes dates and times, and automatically loads data as tibbles (rather than data frames).
 
-To read a data file into R, you need to know how to tell R where to find it. Computers store files in directories (i.e., folders) that are organized hierarchically. By listing the directory path to the file you want to use, you can give R directions on how to find it. Within Rstudio, you set a `working directory`, which is the starting point of where R will start to look for your files. The best thing to do in this class is to make the unzipped lab folder for each week a separate directory (folder), for example `BISC307_Lab1b`, and then to make that folder your working directory for that lab session. 
+To read a data file into R, you need to know how to tell R where to find it. Computers store files in directories (i.e., folders) that are organized hierarchically. By listing the directory path to the file you want to use, you can give R directions on how to find it. Within Rstudio, you set a `working directory`, which is the starting point of where R will start to look for your files. The best thing to do in this class is to make the unzipped lab folder for each week a separate directory (folder), for example `BISC307_Lab1B`, and then to make that folder your working directory for that lab session. 
 
 In R, you can set your working directory a few different ways:
 
-1. In the `Files` panel in the lower right windowpane of Rstudio, navigate to the directory that you want to be your working directory and go inside that folder. Click `More` within the `Files` panel, then `Set As Working Directory`. 
+1. In the `Files` panel in the lower right windowpane of Rstudio, navigate to the directory that you want to be your working directory and go inside that folder. Click `More` within the `Files` panel, then `Set As Working Directory`.
 
 2. On the top Rstudio menu bar, click `Session` then `Set Working Directory` then you can either choose your working directory or set it `To Source File Location`, which should work for our labs.
 
@@ -69,7 +69,8 @@ We can then use `ggplot` to visualize the difference in IETs across neighborhood
 
 ```{r}
 # Plot IETs by neighborhood, across all time periods
-ggplot(IETs_nbh) + geom_boxplot(mapping = aes(x = neighborhood, y = temperature))
+ggplot(IETs_nbh) + 
+  geom_boxplot(mapping = aes(x = neighborhood, y = temperature))
 
 ```
 
@@ -100,7 +101,9 @@ We can fix the order of the x-axis categories to be a more intuitive order (inst
 # Better Plot
 ggplot(IETs_nbh_time) + 
   geom_boxplot(mapping = aes(x = hrs, y = temperature, color = neighborhood)) +
-  scale_x_discrete(limits = c("12am-4am", "4am-8am", "8am-12pm", "12pm-4pm", "4pm-8pm", "8pm-12am"))
+  scale_x_discrete(limits = 
+                     c("12am-4am", "4am-8am", "8am-12pm", "12pm-4pm",
+                       "4pm-8pm", "8pm-12am"))
 
 # New colors - you can run display.brewer.all() in the Console window to see all options
 ggplot(IETs_nbh_time) + 
