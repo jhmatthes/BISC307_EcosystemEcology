@@ -1,13 +1,13 @@
 ---
-title: 'BISC 307, Lab 1a: Ecoclimate & Public Health'
+title: 'BISC 307, Lab 1A: Ecoclimate & Public Health'
 author: "Prof. Jackie Hatala Matthes, Fall 2018"
-date: 'Lab: 12 September'
+date: 'Lab: 11 September'
 output:
   html_document: default
   pdf_document: default
 ---
 
-### Lab 1a Objectives
+### Lab 1A Objectives
 1. Visualize similarities and differences in Phoenix and Boston climates.
 2. Use 30-year climatology to calculate daily departures from "normal" climate.
 3. Quantitatively assess whether Phoenix or Boston weather is more predictable. 
@@ -34,19 +34,19 @@ load("data/BOSPHO_climate.RData")
 
 ```
 
-When you load the .RData file, this should create an object in your Rstudio "Environment" panel (usually in the upper right box of Rstudio software) called `BOS.PHO.climate`. `BOS.PHO.climate` is a tibble object; you can see that this tibble has 54,962 rows (observations) and 5 columns (variables). We can take a look at the tibble summary by running:
+When you load the .RData file, this should create an object in your Rstudio "Environment" panel (usually in the upper right box of Rstudio software) called `BOSPHO_climate`. `BOSPHO_climate` is a tibble object; you can see that this tibble has 54,962 rows (observations) and 5 columns (variables). We can take a look at the tibble summary by running:
 
 ```{r}
-BOS.PHO.climate
+BOS_climate
 ```
 
 From this tibble summary output, we can see that the dimensions (numbers of rows and columns of the data) in addition to the variable (column) names and the class of the data in each variable. In this tibble, the `station` variable is a character class (letters), the `date` is a date class, `tmax` and `tmin` are integers, and `precip` is a numeric decimal value. 
 
-Now that we've looked at the tibble, let's make our first ggplot, of the maximum temperature in Boston and Phoenix over the whole time period. 
+Now that we've looked at the tibble, let's make our first ggplot, of the maximum temperature in Boston over the whole time period. 
 
 ```{r}
-# Plot Phoenix and Boston maximum temperature
-ggplot(data = BOS.PHO.climate) + 
+# Plot Boston maximum temperature
+ggplot(data = BOS_climate) + 
   geom_line(mapping = aes(x = date, y = tmax, col=station)) +
   labs(x = "Date", y = "Maximum Temperature [C]")
 
@@ -56,7 +56,7 @@ The syntax of the ggplot function and arguments should look familiar from the R 
 
 ***
 **Code Challenge 1:
-Create a plot that shows the daily precipitation values for the whole time series for Boston and Phoenix.**
+Create a plot that shows the daily precipitation values for the whole time series for Boston and a second precipitation plot for Phoenix.**
 
 ***
 
@@ -70,11 +70,10 @@ For almost all of the "data processing" functions in the tidyverse packages, the
 
 ```{r}
 # Clip out 1981-2010 in BOS from the climate data
-BOS.climrecent <- filter(BOS.PHO.climate, year(date) > 1980 & year(date) < 2011,
-                     station == "BOSTON MA US")
+BOS_climrecent <- filter(BOS_climate, year(date) > 1980 & year(date) < 2011)
 
 # Plot Phoenix and Boston maximum temperature, 1981-2010
-ggplot(data = BOS.climrecent) + 
+ggplot(data = BOS_climrecent) + 
   geom_line(mapping = aes(x = date, y = tmax))
 
 ```
@@ -82,50 +81,70 @@ ggplot(data = BOS.climrecent) +
 The next step is to take the 30-year average for maximum temperature on each day, so that we can determine whether any particular day in a year is hotter/colder than "normal". We'll do this with a set of three functions: 
 
 1. `mutate()` to add a column with just the month & day for each date (removing year)
+2. 
 2. `group_by()` to define the month-day column as the grouping variable
 3. `summarize()` to calculate the 30-year statistics over the grouping variable
 
 ```{r, warning=FALSE}
 # Add a new tibble column with just month & day from date
-BOS.climrecent.v2 <- mutate(BOS.climrecent, 
-                     month.day = as.Date(format(date, format = "%m-%d"), format = "%m-%d"))
-
-# Remove leap year dates by removing days that are NA: small detail, simplifies climatology
-BOS.climrecent.v2 <- BOS.climrecent.v2[!is.na(BOS.climrecent.v2$month.day),]
+BOS_climrecent_v2 <- mutate(BOS_climrecent,
+                            month_day = format(date, "%m-%d"))
 
 # Group tibble by month.day for climatology
-BOS.clim.grouped <- group_by(BOS.climrecent.v2, month.day)
+BOS_clim_grouped <- group_by(BOS_climrecent_v2, month_day)
 
 # Calculate 30-year average tmax for each day of the year
-BOS.tmax30yr <- summarize(BOS.clim.grouped, tmax.mean = mean(tmax, na.rm=TRUE))
+BOS_tmax30yr <- summarize(BOS_clim_grouped, 
+                          tmax_mean = mean(tmax, na.rm=TRUE))
 
 # Plot Boston climatological maximum temperature, 1981-2010
-ggplot(data = BOS.tmax30yr) + 
-  geom_line(mapping = aes(x = month.day, y = tmax.mean)) + 
-  labs(x = "Date", y = "Maximum Temperature [C]")
+ggplot(data = BOS_tmax30yr) + 
+  geom_line(mapping = aes(x = as.Date(month_day, format = "%m-%d"), 
+                          y = tmax_mean)) + 
+  labs(x = "Date", y = "Maximum Temperature [C]") +
+  scale_x_date(date_labels = "%b")
 
 ```
 
-***
-**Code Challenge 2:
-Repeat the steps that we used here to calculate and visualize the 30-year climatological mean daily maximum temperature for Phoenix.**
-
-***
-
-Next, we'll calculate the difference between the weather data values of daily maximum temperature and the climatological normal maximum temperature. The first step to doing this is to add a column with the 30-year mean values for each date. We'll use the `rep()` function to repeat our 30-year climatology 30 times, to match the length of the data from 1981-2010. We'll add the column with the 30-year climatology to our dataset with `mutate()`. And then in the next step, we'll use `mutate()` again to make a new column that is tmax - tmax.mean. 
+Whenever we are writing a set of data processing steps with intermediate objects (e.g., `BOS_climrecent` and `BOS_climrecent_v2`), it's good to think about putting those steps together into neater and more efficient blocks of code by using `pipes %>%`. When you're initially trouble-shooting code, it is sometimes easier to write each piece separately, but pipes help to tie everything together. For example, if we re-write the steps that we took above to find the 30-year Boston climatology using pipes, we'd have:
 
 ```{r}
-# Add 30-year mean daily max temp to new tibble
-BOS.climatology <- mutate(BOS.climrecent.v2, 
-                          tmax.mean = rep(BOS.tmax30yr$tmax.mean, 30))
+# Summarize 30-year 1981-2010 max temperature
+BOS_tmaxClimatology <- BOS_climate %>%
+  filter(year(date) > 1980 & year(date) < 2011) %>%
+  mutate(month_day = format(date, "%m-%d")) %>%
+  group_by(month_day) %>%
+  summarize(tmax_mean = mean(tmax, na.rm=TRUE))
 
-# Add column for difference between daily maximum temperature and the climatological mean
-BOS.climatology <- mutate(BOS.climatology, 
-                          tmax.diff = tmax - tmax.mean)
+# Plot Boston climatological maximum temperature, 1981-2010
+ggplot(data = BOS_tmaxClimatology) + 
+  geom_line(mapping = aes(x = as.Date(month_day, format = "%m-%d"), 
+                          y = tmax_mean)) + 
+  labs(x = "Date", y = "Maximum Temperature [C]") +
+  scale_x_date(date_labels = "%b")
+
+```
+
+
+***
+**Code Challenge 2:
+Repeat the steps that we used here to calculate and visualize the 30-year climatological mean daily maximum temperature for Phoenix. BEFORE YOU START CODING, outline and review with your partner the steps that you are going to take.**
+
+***
+
+Next, we'll calculate the difference between the weather data values of daily maximum temperature and the climatological 30-year mean maximum temperature. The first step to doing this is to add a column with the 30-year mean values for each date to the original climate data. We'll use the `left_join()` function to connect the 30-year climatology by matching up the day-month in both datasets. We'll learn more about `joins` in detail later on in this class. Then, we'll use `mutate()` to make a new column that is tmax - tmax_mean to represent the difference between the actual temperature and the 30-year mean temperature on that day. 
+
+```{r}
+# Join 30-year mean daily max temp to all yearly data
+BOS_climatology <- BOS_climate %>%
+  filter(year(date) > 1980 & year(date) < 2011) %>%
+  mutate(month_day = format(date, "%m-%d")) %>%
+  left_join(BOS_tmaxClimatology, by = "month_day") %>%
+  mutate(tmax_diff = tmax - tmax_mean)
 
 # Plot Boston difference from climatological maximum temperature, 1981-2010
-ggplot(data = BOS.climatology) + 
-  geom_line(mapping = aes(x = date, y = tmax.diff)) + 
+ggplot(data = BOS_climatology) + 
+  geom_line(mapping = aes(x = date, y = tmax_diff)) + 
   labs(x = "Date", y = "Temperature difference from 30-year average [C]")
 
 ```
@@ -144,8 +163,8 @@ We can assess predictability of weather within a particular location by comparin
 
 ```{r}
 # Plot Boston difference from climatological maximum temperature, 1981-2010
-ggplot(data = BOS.climatology) + 
-  geom_density(mapping = aes(x = tmax.diff)) +
+ggplot(data = BOS_climatology) + 
+  geom_density(mapping = aes(x = tmax_diff)) +
   labs(x = "Daily max temp difference from 30-year normal [C]", y = "Probability") 
 
 ```
