@@ -1,0 +1,217 @@
+---
+title: 'BISC 307, Lab 2B: Photosynthesis & Leaf Traits'
+author: "Prof. Jackie Hatala Matthes, Fall 2018"
+date: 'Lab: 25 September'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+### Lab 2b Objectives
+1. Learn to explore patterns in data that can be used to generate hypotheses and examine how ecological and evolutionary processes control photosynthesis.
+2. Examine variation within variables, and covariation among variables within a global dataset for leaf carbon exchange.
+3. Use models to extract patterns out of data. 
+
+### 1. Introduction
+In this lab, we'll work with a [global dataset](http://onlinelibrary.wiley.com/doi/10.1002/ecy.1992/abstract) of leaf carbon exchange measurements and leaf traits collected across 626 individual plants of 98 species at 12 sites in North and South America that span 58 degrees of latitude.. Our lab objectives for today will practice and build on the sections on Exploratory Data Analysis that you read in preparation for this week's lab, [Sections 7.1-7.6 from the R for Data Science book](http://r4ds.had.co.nz/exploratory-data-analysis.html), in addition to exploring global patterns in leaf carbon/water exchange.
+
+Before we start looking at data, set your working directory. In R, you can set your working directory a few different ways:
+
+1. In the `Files` panel in the lower right windowpane of Rstudio, navigate to the directory that you want to be your working directory and go inside that folder. Click `More` within the `Files` panel, then `Set As Working Directory`. 
+
+2. On the top Rstudio menu bar, click `Session` then `Set Working Directory` then you can either choose your working directory or set it `To Source File Location`, which should work for our labs.
+
+3. You can use the `setwd()` function in the `Console` window with the path to your working directory written inside the function surrounded by `' '`.
+
+And let's load the libraries that we'll be using too. 
+
+```{r}
+# Load libraries
+library(tidyverse)
+
+# Load plantecophys package to fit A-Ci curves
+library(plantecophys)
+```
+
+
+### 2. A-Ci Curve Fitting
+
+The key data for this lab are comprised of the biologically relevant parameters fit with A-Ci curves collected on individuals. The raw data are all within the `LCE_ACi_curves` directory (inside the `data` directory) in the lab folder. We'll work through one example of an A-Ci curve fit, to see how the parameters of interest, Vcmax, Jmax, and Rd, are estimated. 
+
+Most of the computational heavy lifting for A-Ci curve fitting is done with nonlinear estimators from the `plantecophys` package, which save us from having to code the three equations ourselves. It is, however, important to conceptually understand what is going on within the A-Ci curve fitting. Remember that in class, we discussed the three equations that are simultaneously being fit for Rubisco-limited photosynthesis (Ac), RuBP-limited photosynthesis (Aj), and stomatal conductance (gs). 
+
+```{r}
+# Read in example A-Ci curve data
+ID <- "Auburn_Iopa_1"
+aci_ID <- read_csv(paste0("data/LCE/LCE_ACi_curves/",ID,".csv")) 
+
+# Fit A-Ci curve with fitaci function from plantecophys package
+fit_ID <- fitaci(aci_ID, 
+                 varnames = list(ALEAF = "Photo", 
+                                 Tleaf = "Tleaf", Ci = "Ci", PPFD = "Pari"), 
+                 Tcorrect=TRUE, useRd=FALSE) 
+
+# Look at the estimated parameters from the A-Ci curve fitting
+fit_ID
+
+```
+
+Within the output from the `fitaci()` function, we can see the variables that we are most interested in, Vcmax, Jmax, and Rd. For the rest of lab, we are going to work with a dataset where these parameters have already been calculated from the 626 A-Ci curves aggregated within this global dataset. 
+
+
+### 3. Global dataset of Vcmax, Jmax, and Rd
+
+This global dataset used A-Ci curved collected from plants within ecosystems in North and South America to find Vcmax, Jmax, and Rd. The rest of our lab will focus on examining patterns, generating questions, and testing hypotheses for the values of Vcmax, Jmax, and Rd that have already been calculated in the `LCE_data.csv` file (LCE = leaf carbon exchange). First, let's load the data and see what it looks like:
+
+```{r}
+LCE_global <- read_csv("data/LCE/LCE_data.csv")
+
+LCE_global
+
+```
+
+One of the first things to do when you start exploring a big dataset like this that you haven't seen before is to understand the dimensions of the data (which we can see from looking at the tibble above), and what type of replication there is within the major cateogires of the dataset. This can help to inform what to do next with the data.
+
+```{r}
+# Find numbers of "replicates" at each Locations (site)
+LCE_global %>% 
+  group_by(Location) %>%
+  summarize(count = n())
+
+# Find numbers of "replicates" for C3 and C4 plants
+LCE_global %>%
+  group_by(Photosynthesis) %>%
+  summarize(count = n())
+
+```
+
+***
+**Code Challenge 1:
+Examine numbers of replicates within at least two additional variables that you might be interested in examining further. Remember that the potential variables for exploration are all the column names of the LCE_global tibble. **
+
+***
+
+### 4. Visualizing variation within a single variable & covariation among a categorical and continuous variable
+
+The first place to start when you are doing exploratory data analysis is to visualize the distribution of your data. For categorical data, this is what we did when we generated "count" tables above. The tables are telling us how our dataset is distributed among those categories. We also could have plotted this using geom_bar:
+
+```{r}
+# Plot data by Location
+ggplot(data = LCE_global) + 
+  geom_bar(mapping = aes(x = Location))
+
+# Plot data by Location - add color to see which latitude sites are at
+ggplot(data = LCE_global) + 
+  geom_bar(mapping = aes(x = Location, fill = Lat))
+
+```
+
+We can also examine the distribution of our continuous variables with geom_freqpoly:
+
+```{r}
+# Plot Vcmax distribution
+ggplot(data = LCE_global) + 
+  geom_freqpoly(aes(x = Vcmax))
+
+# Plot Rd distribution
+ggplot(data = LCE_global) + 
+  geom_freqpoly(aes(x = Rd))
+
+```
+
+We can also use visual techniques to examine the covariation between a continuous and categorical variable. Let's start by examining the distribution for Vcmax within C3 and C4 plants:
+
+```{r}
+# Plot distributions of Vcmax, colored by C3/C4 Photosynthesis
+ggplot(data = LCE_global) +
+  geom_freqpoly(mapping = aes(x = Vcmax, color = Photosynthesis))
+
+# Alternate Plot: scaled by probability density (integrates to 1.0, rather than showing counts) 
+ggplot(data = LCE_global) +
+  geom_freqpoly(mapping = aes(x = Vcmax, y = ..density.., color = Photosynthesis))
+
+```
+
+Visualizing the distributions of the data will help to understand the range of values, show differences among categories, highlight interesting aspects of your data (groups, outliers, etc.), and eventually inform details of statistical tests that you might use to quantify differences among groups in your data. 
+
+***
+**Code Challenge 2:
+Examine the distributions for Vcmax separated by one of the other categorical variables in the data. **
+
+***
+
+***
+**Code Challenge 3:
+Visualize the distributions for Vcmax separated by TWO of the categorical variables in the data. **
+
+***
+
+### 5. Visualizing covariation among two continuous variables
+
+There are also several continuous variables for which we can examine the connection to the leaf carbon exchange variables within this dataset. Let's first look to see whether leaf mass (`LM` in the tibble) is connected to Vcmax:
+
+```{r}
+# Plot leaf mass (LM) against Vcmax
+ggplot(data = LCE_global) +
+  geom_point(mapping = aes(x = LA, y = Vcmax))
+
+```
+
+
+***
+**Code Challenge 4:
+Visualize the covariation between two of the photosynthesis variables (Vcmax, Jmax, and Rd). Do they covary? If so, describe the pattern, and speculate about why they might covary. **
+
+***
+
+### 6. Patterns and models
+
+I think that the R for Data Science book does an excellent job outlining these four questions to ask yourself when you notice a pattern in your data:
+
+1. Could this pattern be due to coincidence (i.e. random chance)?
+2. How can you describe the relationship implied by the pattern?
+3. How strong is the relationship implied by the pattern?
+4. What other variables might affect the relationship?
+5. Does the relationship change if you look at individual subgroups of the data?
+
+Visualizing your data is arguably the most powerful way to look for patterns and to also convince others that these patterns exist. It's always helpful to start with visualization and exploratory data analysis to examine patterns in your data that address your research question. However, at some point you will need to do a statistical test with a statistical model to determine whether the patterns that you see are "significant" (this is a complex term that we'll only scratch the surface of within this class). 
+
+```{r}
+# ANOVA: analysis of variance
+# model differences in continuous variable against cateogorical groups
+C3C4_Vcmax <- lm(Vcmax ~ Photosynthesis ,data = LCE_global)
+summary(C3C4_Vcmax)
+
+# Tukey Pairwise Honestly Significant Differences (HSD) Test 
+TukeyHSD(aov(C3C4_Vcmax))
+
+```
+
+The output from this statitsical model and the Tukey HSD test show us that the mean Vcmax values for the two groups (C3 and C4 plants) are marginally significantly different (p < 0.1). The mean Vcmax for the C4 group is 10.323 (with standard error 5.978) larger than the C3 group. 
+
+One important qualification for these results is that whether a plant is C3 or C4 in our dataset might be confounded with other variables, and thus it might not represent a causal relationship. For example, if all of our C4 measurements were from a tropical site, this might mean that temperature, not photosynthesis type, was the causal mechanism for this pattern. Throughout exploratory data analysis and statistical testing, it's **essential** to keep reminding yourself about what the data mean and how different variables might be connected to each other. 
+
+For the purposes of this lab, a useful stratgey to avoid suprious or confounded results is to take a subset of the data (using Data Transformation tools from previous labs) to examine patterns at a smaller scale. For example, we could fit an ANOVA model for the Vcmax of C3 and C4 plants on data just from the tropical sites, or just from a particular site. Or, if we wanted to look at patterns across all the sites, we could subset to just examine C3 plants (or vice versa, C4 plants). 
+
+
+***
+**LAB REPORT INSTRUCTIONS:**
+
+* For your Lab 2 Report, you can investigate a question/hypothesis related to Vcmax, Jmax, or Rd that can be tested by the global leaf carbon exchange dataset. You can look at the entire dataset, or a subset (particular sites, particular species, etc.) to formulate/answer your research question. 
+
+* As you structure your data analysis to answer your question, produce an .R script pretending that you are starting from scratch (i.e., don't assume that you have anything loaded from doing the lab exercise). The goal is to be able to hand someone your code and be able to have them re-run your analysis to see what you did and how - this is reproducible research! 
+
+* In addition to your .R script, for the Lab 2 Report you will turn in a text .pdf document no longer than 4 single-spaced pages in the format oulined within the Lab Report Guidelines. 
+
+* Your Lab 2 Report document must include at least one ggplot figure and one summary table, which counts toward the 4-page limit. 
+
+
+***
+
+
+
+
+
+
+
+
