@@ -13,17 +13,9 @@ output:
 3. Use models to extract patterns out of data. 
 
 ### 1. Introduction
-In this lab, we'll work with a [global dataset](http://onlinelibrary.wiley.com/doi/10.1002/ecy.1992/abstract) of leaf carbon exchange measurements and leaf traits collected across 626 individual plants of 98 species at 12 sites in North and South America that span 58 degrees of latitude.. Our lab objectives for today will practice and build on the sections on Exploratory Data Analysis that you read in preparation for this week's lab, [Sections 7.1-7.6 from the R for Data Science book](http://r4ds.had.co.nz/exploratory-data-analysis.html), in addition to exploring global patterns in leaf carbon/water exchange.
+In this lab, we'll work with a [global dataset](http://onlinelibrary.wiley.com/doi/10.1002/ecy.1992/abstract) of leaf carbon exchange measurements and leaf traits collected across 626 individual plants of 98 species at 12 sites in North and South America that span 58 degrees of latitude and published in in [Smith & Dukes  (2017)](http://onlinelibrary.wiley.com/doi/10.1002/ecy.1992/abstract). Our lab objectives for today will practice and build on the sections on Exploratory Data Analysis that you read in preparation for this week's lab, [Sections 7.1-7.6 from the R for Data Science book](http://r4ds.had.co.nz/exploratory-data-analysis.html), in addition to exploring global patterns in leaf carbon/water exchange.
 
-Before we start looking at data, set your working directory. In R, you can set your working directory a few different ways:
-
-1. In the `Files` panel in the lower right windowpane of Rstudio, navigate to the directory that you want to be your working directory and go inside that folder. Click `More` within the `Files` panel, then `Set As Working Directory`. 
-
-2. On the top Rstudio menu bar, click `Session` then `Set Working Directory` then you can either choose your working directory or set it `To Source File Location`, which should work for our labs.
-
-3. You can use the `setwd()` function in the `Console` window with the path to your working directory written inside the function surrounded by `' '`.
-
-And let's load the libraries that we'll be using too. 
+Your first step should be to create an R script file and to set your working directory (or to make a Project file). Next, we'll load the libraries that we'll be using. 
 
 ```{r}
 # Load libraries

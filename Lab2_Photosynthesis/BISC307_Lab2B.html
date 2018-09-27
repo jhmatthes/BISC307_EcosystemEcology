@@ -133,14 +133,8 @@ $(document).ready(function () {
 </div>
 <div id="introduction" class="section level3">
 <h3>1. Introduction</h3>
-<p>In this lab, we’ll work with a <a href="http://onlinelibrary.wiley.com/doi/10.1002/ecy.1992/abstract">global dataset</a> of leaf carbon exchange measurements and leaf traits collected across 626 individual plants of 98 species at 12 sites in North and South America that span 58 degrees of latitude.. Our lab objectives for today will practice and build on the sections on Exploratory Data Analysis that you read in preparation for this week’s lab, <a href="http://r4ds.had.co.nz/exploratory-data-analysis.html">Sections 7.1-7.6 from the R for Data Science book</a>, in addition to exploring global patterns in leaf carbon/water exchange.</p>
-<p>Before we start looking at data, set your working directory. In R, you can set your working directory a few different ways:</p>
-<ol style="list-style-type: decimal">
-<li><p>In the <code>Files</code> panel in the lower right windowpane of Rstudio, navigate to the directory that you want to be your working directory and go inside that folder. Click <code>More</code> within the <code>Files</code> panel, then <code>Set As Working Directory</code>.</p></li>
-<li><p>On the top Rstudio menu bar, click <code>Session</code> then <code>Set Working Directory</code> then you can either choose your working directory or set it <code>To Source File Location</code>, which should work for our labs.</p></li>
-<li><p>You can use the <code>setwd()</code> function in the <code>Console</code> window with the path to your working directory written inside the function surrounded by <code>' '</code>.</p></li>
-</ol>
-<p>And let’s load the libraries that we’ll be using too.</p>
+<p>In this lab, we’ll work with a <a href="http://onlinelibrary.wiley.com/doi/10.1002/ecy.1992/abstract">global dataset</a> of leaf carbon exchange measurements and leaf traits collected across 626 individual plants of 98 species at 12 sites in North and South America that span 58 degrees of latitude and published in in <a href="http://onlinelibrary.wiley.com/doi/10.1002/ecy.1992/abstract">Smith &amp; Dukes (2017)</a>. Our lab objectives for today will practice and build on the sections on Exploratory Data Analysis that you read in preparation for this week’s lab, <a href="http://r4ds.had.co.nz/exploratory-data-analysis.html">Sections 7.1-7.6 from the R for Data Science book</a>, in addition to exploring global patterns in leaf carbon/water exchange.</p>
+<p>Your first step should be to create an R script file and to set your working directory (or to make a Project file). Next, we’ll load the libraries that we’ll be using.</p>
 <pre class="r"><code># Load libraries
 library(tidyverse)</code></pre>
 <pre><code>## Loading tidyverse: ggplot2
