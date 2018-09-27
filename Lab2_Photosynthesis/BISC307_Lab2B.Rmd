@@ -3,8 +3,8 @@ title: 'BISC 307, Lab 2B: Photosynthesis & Leaf Traits'
 author: "Prof. Jackie Hatala Matthes, Fall 2018"
 date: 'Lab: 25 September'
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ### Lab 2b Objectives
